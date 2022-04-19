@@ -8,9 +8,12 @@ using SimpleGameFramework;
 
 var world = new World {MaxX = 10, MaxY = 10};
 var player = new Player {position = new Position {X = 0, Y = 0},
-                         Name = "Player"};
+                         Name = "Player",
+                         AttackItem = new Sword {Hitpoint = 25, Name = "Diamond crusted sword"}
+};
 var monster =  new WeakMonster {position = new Position {X = 1, Y = 0},
-                                Name = "Weakling"};
+                                Name = "Weakling"
+};
 
 var loot = new List<object>
 {
@@ -19,16 +22,20 @@ var loot = new List<object>
 };
 
 var lootbox = new LootBox {Position = new Position {X = 5, Y = 3}, 
-                           loot = loot, Name = "A heavy chest"};
+                           loot = loot, Name = "A heavy chest"
+};
 
 world.entities.Add(player);                         
 world.entities.Add(monster);
 world.entities.Add(lootbox);
 
-foreach (var worldEntity in world.entities)
+/*foreach (var worldEntity in world.entities)
 {
     if (worldEntity is Creature creature)
     {
-        Console.WriteLine(creature.position.X);
     }
-}
+}*/
+
+Console.WriteLine(monster.Hitpoint);
+player.Hit(monster);
+Console.WriteLine(monster.Hitpoint);
