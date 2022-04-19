@@ -11,4 +11,8 @@
       <ProjectReference Include="..\SimpleGameFramework\SimpleGameFramework.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Behaviors" />
+    </ItemGroup>
+
 </Project>

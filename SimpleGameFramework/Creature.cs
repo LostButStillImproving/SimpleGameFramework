@@ -2,11 +2,14 @@ namespace SimpleGameFramework;
 
 public class Creature
 {
+    public virtual string Name { get; set; }
+
     public Position position { get; set; }
     
+    public IAttackBehavior AttackBehavior { get; set; }
+    public IAttackable AttackleBehavior { get; set; }
     public AttackItem AttackItem { get; set; }
     public DefenceItem DefenceItem { get; set; }
-    public virtual string Name { get; set; }
     private int _hitpoint;
     public virtual int Hitpoint
     {
@@ -29,12 +32,13 @@ public class Creature
 
     public void Hit(Creature creature)
     {
-        creature.ReceiveHit(this);
+        AttackBehavior.Hit(this ,creature);
     }
-
+    
     public void ReceiveHit(Creature creature)
     {
-        Hitpoint -= creature.AttackItem.Hitpoint;
+        AttackleBehavior.ReceiveHit(creature, this);
     }
+   
     public void Loot(){}
 }
