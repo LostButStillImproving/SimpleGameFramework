@@ -8,5 +8,5 @@ public class LootBox : WorldObject
     public override bool Lootable { get; set; } = true;
     public override bool Removable { get; set; } = true;
 
-    public List<object> loot = new();
+    private List<object> Loot = new();
 }

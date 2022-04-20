@@ -1,9 +1,11 @@
 ﻿using Game;
 using Game.AttackBehaviors;
 using Game.AttackItems;
+using Game.Behaviors.AttackBehaviors;
 using Game.DefenceBehavior;
 using Game.DefenceItems;
 using SimpleGameFramework;
+
 
 var world = new World {MaxX = 10, MaxY = 10};
 var player = new Player {position = new Position {X = 0, Y = 0},
@@ -13,7 +15,7 @@ var player = new Player {position = new Position {X = 0, Y = 0},
                              Hitpoint = 25, Name = "Diamond crusted sword",
                              
                          },
-                         AttackBehavior = new NormalAttack(),
+                         AttackBehavior = new DoubleAttack(),
                          AttackleBehavior = new NormalAttackable()
 };
 
@@ -23,21 +25,20 @@ var monster =  new WeakMonster {position = new Position {X = 1, Y = 0},
                                 {
                                     Hitpoint = 5, Name = "Diamond crusted sword",
                                 },
-                                DefenceItem = new Armor {Name = "thicc leather", ReduceHitpoint = 24},
+                                DefenceItem = new Armor {Name = "thicc leather", ReduceHitpoint = 0},
                                 AttackBehavior = new NormalAttack(),
                                 AttackleBehavior = new NormalAttackable(),
 };
 
+world.AddEntity(player);                         
+world.AddEntity(monster);
 
-
-Console.WriteLine(monster.Hitpoint);
+Console.WriteLine("Entity count: " + world.Entities.Count);
+Console.WriteLine("Monster hp: " + monster.Hitpoint);
 player.Hit(monster);
-Console.WriteLine(monster.Hitpoint);
-Console.WriteLine(player.Hitpoint);
-monster.Hit(player);
-Console.WriteLine(player.Hitpoint);
 
-
+Console.WriteLine("Monster hp: " + monster.Hitpoint);
+Console.WriteLine("Entity count: " + world.Entities.Count);
 
 /*var loot = new List<object>
 {
