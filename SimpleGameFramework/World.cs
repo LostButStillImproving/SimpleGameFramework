@@ -10,13 +10,13 @@ namespace SimpleGameFramework;
 /// </summary>
 public class World
 {
-    protected World(IConfiguration configuration)
+    protected World(IConfiguration? configuration)
     {
-        var mapUnBounded = Convert.ToBoolean(configuration.GetSection("World").GetSection("MapUnbounded").Value);
+        var mapUnBounded = Convert.ToBoolean(configuration?.GetSection("World").GetSection("MapUnbounded").Value);
         var maxY = Convert.ToInt16(
-            configuration.GetSection("World").GetSection("MaxY").Value);
+            configuration?.GetSection("World").GetSection("MaxY").Value);
         var maxX = Convert.ToInt16(
-            configuration.GetSection("World").GetSection("MaxX").Value);
+            configuration?.GetSection("World").GetSection("MaxX").Value);
 
         MapUnbounded = mapUnBounded;
         MaxX = maxX;
@@ -28,6 +28,7 @@ public class World
     /// if false, unit cant cross border of the map. 
     /// </summary>
     public bool MapUnbounded { get; } = true;
+
     /// <summary>
     /// Maximum width of the world
     /// </summary>
@@ -37,22 +38,61 @@ public class World
     /// Maximum height of the world
     /// </summary>
     public int MaxY { get; init; } = 10;
+
     /// <summary>
     /// List of entities in the world
     /// </summary>
-    public List<object> Entities { get;} = new();
+    private List<object> Entities { get; } = new();
 
     /// <summary>
-    /// Add an entity to Entities and subscribes to it
+    /// Add an <see cref="WorldObject"/> to Entities and subscribes to it
     /// </summary>
-    /// <param name="entity"></param>
-    public void AddEntity(object entity)
+    /// <param name="worldObject"></param>
+    public void AddEntity(WorldObject worldObject)
     {
-        Entities.Add(entity);
-        Trace.WriteLine($"Added entity: {entity.GetType()}");
-        SubscribeToEntity(entity);
+        Entities.Add(worldObject);
+        Trace.WriteLine($"Added entity: {worldObject.Name} at position: {worldObject.Position}");
+        SubscribeToEntity(worldObject);
+    }
+    /// <summary>
+    /// Add an <see cref="Creature"/> to Entities and subscribes to it
+    /// </summary>
+    /// <param name="creature"></param>
+    public void AddEntity(Creature creature)
+    {
+        Entities.Add(creature);
+        Trace.WriteLine($"Added entity: {creature.Name} at position: {creature.Position}");
+        SubscribeToEntity(creature);
     }
     
+    /// <summary>
+    /// Add a list of <see cref="Creature"/> and subscribes to them
+    /// </summary>
+    /// <param name="creatures"></param>
+    public void AddEntities(List<Creature> creatures)
+    {
+        foreach (var creature in creatures)
+        {
+            Entities.Add(creature);
+            Trace.WriteLine($"Added entity: {creature.Name} at position: {creature.Position}");
+            SubscribeToEntity(creature);
+        }
+    }
+    
+    /// <summary>
+    /// Add a list of <see cref="WorldObject"/> and subscribes to them
+    /// </summary>
+    /// <param name="worldObjects"></param>
+    public void AddEntities(List<WorldObject> worldObjects)
+    {
+        foreach (var worldObject in worldObjects)
+        {
+            Entities.Add(worldObject);
+            Trace.WriteLine($"Added entity: {worldObject.Name} at position: {worldObject.Position}");
+            SubscribeToEntity(worldObject);
+        }
+    }
+
     /// <summary>
     /// Removes an entity from Entities and unsubscribes from it
     /// </summary>
@@ -79,18 +119,17 @@ public class World
     /// <param name="entity"></param>
     private void UnsubscribeToEntity(object entity)
     {
-
         switch (entity)
         {
             case Creature creature:
                 creature.Unsubscribe(this);
+                Trace.WriteLine($"{this} Unsubscribed from entity: {creature.Name}");
                 break;
             case WorldObject worldObject:
                 worldObject.Unsubscribe(this);
+                Trace.WriteLine($"{this} Unsubscribed from entity: {worldObject.Name}");
                 break;
         }
-        Trace.WriteLine($"{this} Unsubscribed from entity: {entity.GetType()}");
-
     }
 
     /// <summary>
@@ -114,5 +153,25 @@ public class World
         }
 
         Trace.WriteLine($"{this} subscribed to Entity: {entity.GetType()}");
+    }
+
+    /// <summary>
+    /// Checks whether the <see cref="Position"/> is occupited by another object
+    /// </summary>
+    /// <param name="position"></param>
+    /// <returns>bool</returns>
+    public virtual bool PositionIsOccupied(Position position)
+    {
+        bool CheckPosition(object entity)
+        {
+            return entity switch
+            {
+                Creature creature => creature.Position.Equals(position),
+                WorldObject worldObject => worldObject.Position.Equals(position),
+                _ => false
+            };
+        }
+
+        return Entities.Any(CheckPosition);
     }
 }

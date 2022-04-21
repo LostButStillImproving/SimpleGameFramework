@@ -6,5 +6,5 @@ namespace Game;
 public class WeakMonster : Creature
 {
     public override string Name { get; set; } = "Weakling";
-    private int _hitpoint = 20;
+    public override int Hitpoint { get; set; } = 9;
 }

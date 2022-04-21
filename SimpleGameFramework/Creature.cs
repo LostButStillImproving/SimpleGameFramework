@@ -23,7 +23,7 @@ public abstract class Creature
     /// <summary>
     /// The XY coordinate set of the creatures position
     /// </summary>
-    public Position position { get; set; }
+    public Position Position { get; set; }
     
     /// <summary>
     /// An implementation of <see cref="IAttackBehavior"/> such that the creature can hit other creatures
