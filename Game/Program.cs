@@ -1,62 +1,84 @@
-﻿using Game;
-using Game.AttackBehaviors;
+﻿using System.Diagnostics;
+using System.Xml.Schema;
 using Game.AttackItems;
 using Game.Behaviors.AttackBehaviors;
 using Game.DefenceBehavior;
 using Game.DefenceItems;
+using Game.worlds;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.VisualBasic;
 using SimpleGameFramework;
 
+namespace Game;
 
-var world = new World {MaxX = 10, MaxY = 10};
-var player = new Player {position = new Position {X = 0, Y = 0},
-                         Name = "Player",
-                         AttackItem = new Sword
-                         {
-                             Hitpoint = 25, Name = "Diamond crusted sword",
-                             
-                         },
-                         AttackBehavior = new DoubleAttack(),
-                         AttackleBehavior = new NormalAttackable()
-};
-
-var monster =  new WeakMonster {position = new Position {X = 1, Y = 0},
-                                Name = "Weakling",
-                                AttackItem = new Sword
-                                {
-                                    Hitpoint = 5, Name = "Diamond crusted sword",
-                                },
-                                DefenceItem = new Armor {Name = "thicc leather", ReduceHitpoint = 0},
-                                AttackBehavior = new NormalAttack(),
-                                AttackleBehavior = new NormalAttackable(),
-};
-
-world.AddEntity(player);                         
-world.AddEntity(monster);
-
-Console.WriteLine("Entity count: " + world.Entities.Count);
-Console.WriteLine("Monster hp: " + monster.Hitpoint);
-player.Hit(monster);
-
-Console.WriteLine("Monster hp: " + monster.Hitpoint);
-Console.WriteLine("Entity count: " + world.Entities.Count);
-
-/*var loot = new List<object>
+public static class Program
 {
-    new Sword {Hitpoint = 25, Name = "Diamond crusted sword"},
-    new Armor {ReduceHitpoint = 12, Name = "Tattered leather armor"}
-};
+    private static IConfigurationRoot configuration;
 
-var lootbox = new LootBox {Position = new Position {X = 5, Y = 3}, 
-                           loot = loot, Name = "A heavy chest"
-};
-
-world.entities.Add(player);                         
-world.entities.Add(monster);
-world.entities.Add(lootbox);
-
-foreach (var worldEntity in world.entities)
-{
-    if (worldEntity is Creature creature)
+    private static int Main()
     {
+            Run();
+            GameLoop();
+            return 0;
     }
-}*/
+
+    private static void Run()
+    {
+        // Create service collection
+        var serviceCollection = new ServiceCollection();
+        ConfigureServices(serviceCollection);
+    }
+
+    private static void ConfigureServices(IServiceCollection serviceCollection)
+    {
+        
+        // Build configuration
+        configuration = new ConfigurationBuilder()
+            .SetBasePath(@"C:\Users\dnielsen\RiderProjects\SimpleGameFramework\Game")
+            .AddJsonFile("appsettings.json", false)
+            .Build();
+
+        // Add access to generic IConfigurationRoot
+        serviceCollection.AddSingleton(configuration);
+    }
+
+    private static void GameLoop()
+    {
+        Trace.Listeners.Clear();  
+        Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
+        var doubleAttack = new DoubleAttack();
+        var doubleDamage = new DoubleDamage();
+        var world = new NewWorld(configuration);
+        var player = new Player {position = new Position {X = 0, Y = 0},
+            Name = "Player",
+            AttackItem = new Sword
+            {
+                Hitpoint = 25, Name = "Diamond crusted sword",
+                             
+            },
+            AttackBehavior = doubleAttack,
+            AttackleBehavior = new NormalAttackable(),
+            Observe = false
+        };
+
+        var monster =  new WeakMonster {position = new Position {X = 1, Y = 0},
+            Name = "Weakling",
+            AttackItem = new Sword
+            {
+                Hitpoint = 5, Name = "Diamond crusted sword",
+            },
+            DefenceItem = new Armor {Name = "thicc leather", ReduceHitpoint = 0},
+            AttackBehavior = doubleDamage,
+            AttackleBehavior = new NormalAttackable(),
+            Observe = false
+        };
+
+        world.AddEntity(player);                         
+        world.AddEntity(monster);
+
+        player.Hit(monster);
+        monster.Hit(player);
+    }
+
+}

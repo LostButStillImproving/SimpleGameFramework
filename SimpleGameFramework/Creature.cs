@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace SimpleGameFramework;
 
 
@@ -5,8 +7,9 @@ namespace SimpleGameFramework;
 /// A creature that exists within the <see cref="World"/>, both players and NPCs would inherit from Creature
 /// Carries <see cref="AttackItem"/>, <see cref="DefenceItem"/>
 /// </summary>
-public class Creature
+public abstract class Creature
 {
+    public virtual bool Observe { get; set; } = true;
     /// <summary>
     /// A list of subscribers
     /// </summary>
@@ -41,7 +44,6 @@ public class Creature
     /// </summary>
     public DefenceItem DefenceItem { get; set; }
     
-    
     private int _hitpoint;
     /// <summary>
     /// The creatures total hp
@@ -54,20 +56,18 @@ public class Creature
         {
             _hitpoint = value;
             if (Hitpoint > 0) return;
-            Console.WriteLine("check");
             RemoveSelf();
         }
     }
-
     
-
     /// <summary>
     /// Hits another creature using AttackBehavior
     /// </summary>
     /// <param name="creature"></param>
     public void Hit(Creature creature)
     {
-        
+        var message = $"{Name} hits {creature.Name}";
+        Trace.WriteLine(message);
         AttackBehavior.Hit(this ,creature);
     }
     
@@ -92,7 +92,10 @@ public class Creature
         if (Subscribers == null) return;
         foreach (var subscriber in Subscribers.ToList())
         {
+            
             subscriber.RemoveEntity(this);
+            var message = $"{Name} was removed from the world";
+            Trace.WriteLine(message);
         }
     }
     
