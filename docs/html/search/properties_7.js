@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['position_0',['Position',['../class_creature.html#adbeb26bfcb58c328287d2660ceca30a8',1,'Creature.Position()'],['../class_world_object.html#adcdc869e944f59292496781b183d4ba8',1,'WorldObject.Position()']]]
+  ['observe_0',['Observe',['../class_creature.html#af44892fd8f8e906457b4b03aa9a5b37a',1,'Creature.Observe()'],['../class_world_object.html#a241ae0448a474bceae5b2c46e764de79',1,'WorldObject.Observe()']]]
 ];

@@ -10,10 +10,10 @@ var dir_21c76f8318c32a363f146db7d453fd8c =
       [ "DefenceItem", "class_defence_item.html", "class_defence_item" ]
     ] ],
     [ "IAttackable.cs", "_i_attackable_8cs.html", [
-      [ "IAttackable", "class_i_attackable.html", "class_i_attackable" ]
+      [ "IAttackable", "interface_i_attackable.html", "interface_i_attackable" ]
     ] ],
     [ "IAttackBehavior.cs", "_i_attack_behavior_8cs.html", [
-      [ "IAttackBehavior", "class_i_attack_behavior.html", "class_i_attack_behavior" ]
+      [ "IAttackBehavior", "interface_i_attack_behavior.html", "interface_i_attack_behavior" ]
     ] ],
     [ "Position.cs", "_position_8cs.html", [
       [ "Position", "class_position.html", "class_position" ]

@@ -1,6 +1,6 @@
 var class_creature =
 [
-    [ "Hit", "class_creature.html#ab0378095e5e883c7ab2e3d045c8fb658", null ],
+    [ "Hit", "class_creature.html#ae6c5e93d936711b0352c04d582a6917a", null ],
     [ "Loot", "class_creature.html#a45302086b497ebd9dc376121e9ff58bb", null ],
     [ "ReceiveHit", "class_creature.html#a0caf0c0cb8be8f19e9996d7b12032eae", null ],
     [ "RemoveSelf", "class_creature.html#a0a9eed1ab95aac217a98c878325496bf", null ],

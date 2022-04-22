@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['loot_0',['Loot',['../class_world_object.html#ae243539dcc37eaafa43751bc757f256d',1,'WorldObject']]],
-  ['lootable_1',['Lootable',['../class_world_object.html#a98cc75c2d8047ba5a722794e5171d295',1,'WorldObject']]]
+  ['hitpoint_0',['Hitpoint',['../class_attack_item.html#aec059cb106be8c4c63d0d7463a589fce',1,'AttackItem.Hitpoint()'],['../class_creature.html#af858cbd275da918a8892dc3ecaaf6c9a',1,'Creature.Hitpoint()']]]
 ];
