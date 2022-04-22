@@ -4,7 +4,7 @@ namespace Game.DefenceBehavior;
 
 public class NormalAttackable : IAttackable
 {
-    public override void ReceiveHit(Creature hitter, Creature receiver)
+    public void ReceiveHit(Creature hitter, Creature receiver)
     {
         int damageReceived;
         if (receiver.DefenceItem is not null)

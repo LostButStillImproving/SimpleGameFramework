@@ -22,6 +22,7 @@ public class World
         MaxX = maxX;
         MaxY = maxY;
     }
+    protected World() {}
 
     /// <summary>
     /// Sets behavior for exiting the map, if true unit appears on opposite side,
@@ -42,13 +43,13 @@ public class World
     /// <summary>
     /// List of entities in the world
     /// </summary>
-    private List<object> Entities { get; } = new();
+    public virtual List<object> Entities { get; } = new();
 
     /// <summary>
     /// Add an <see cref="WorldObject"/> to Entities and subscribes to it
     /// </summary>
     /// <param name="worldObject"></param>
-    public void AddEntity(WorldObject worldObject)
+    public virtual void AddEntity(WorldObject worldObject)
     {
         Entities.Add(worldObject);
         Trace.WriteLine($"Added entity: {worldObject.Name} at position: {worldObject.Position}");
@@ -58,7 +59,7 @@ public class World
     /// Add an <see cref="Creature"/> to Entities and subscribes to it
     /// </summary>
     /// <param name="creature"></param>
-    public void AddEntity(Creature creature)
+    public virtual void AddEntity(Creature creature)
     {
         Entities.Add(creature);
         Trace.WriteLine($"Added entity: {creature.Name} at position: {creature.Position}");
@@ -69,13 +70,11 @@ public class World
     /// Add a list of <see cref="Creature"/> and subscribes to them
     /// </summary>
     /// <param name="creatures"></param>
-    public void AddEntities(List<Creature> creatures)
+    public virtual void AddEntities(List<Creature> creatures)
     {
         foreach (var creature in creatures)
         {
-            Entities.Add(creature);
-            Trace.WriteLine($"Added entity: {creature.Name} at position: {creature.Position}");
-            SubscribeToEntity(creature);
+            AddEntity(creature);
         }
     }
     
@@ -83,12 +82,11 @@ public class World
     /// Add a list of <see cref="WorldObject"/> and subscribes to them
     /// </summary>
     /// <param name="worldObjects"></param>
-    public void AddEntities(List<WorldObject> worldObjects)
+    public virtual void AddEntities(List<WorldObject> worldObjects)
     {
         foreach (var worldObject in worldObjects)
         {
-            Entities.Add(worldObject);
-            Trace.WriteLine($"Added entity: {worldObject.Name} at position: {worldObject.Position}");
+            AddEntity(worldObject);
             SubscribeToEntity(worldObject);
         }
     }
@@ -97,7 +95,7 @@ public class World
     /// Removes an entity from Entities and unsubscribes from it
     /// </summary>
     /// <param name="entity"></param>
-    public void RemoveEntity(object entity)
+    public virtual void RemoveEntity(object entity)
     {
         Entities.Remove(entity);
         Trace.WriteLine($"Removed entity: {entity.GetType()}");
@@ -117,7 +115,7 @@ public class World
     /// Unsubscribes from an entity
     /// </summary>
     /// <param name="entity"></param>
-    private void UnsubscribeToEntity(object entity)
+    public virtual void UnsubscribeToEntity(object entity)
     {
         switch (entity)
         {
@@ -136,7 +134,7 @@ public class World
     /// Subscribes to an entity
     /// </summary>
     /// <param name="entity"></param>
-    private void SubscribeToEntity(object entity)
+    public virtual void SubscribeToEntity(object entity)
     {
         switch (entity)
         {

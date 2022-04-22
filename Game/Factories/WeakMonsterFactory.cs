@@ -9,18 +9,13 @@ namespace Game.Factories;
 
 public class WeakMonsterFactory : ICreatureFactory
 {
-    private World World { get; set; }
     private readonly IAttackBehavior _attackBehavior = new NormalAttack();
     private readonly IAttackable _attackable = new NormalAttackable();
-    public WeakMonsterFactory(World world)
+    
+    public IEnumerable<Creature> CreateCreatures(int count, World targetWorld)
     {
-        World = world;
-    }
-
-    public IEnumerable<Creature> CreateCreatures(int count, World world)
-    {
-        var maxX = world.MaxX;
-        var maxY = world.MaxY;
+        var maxX = targetWorld.MaxX;
+        var maxY = targetWorld.MaxY;
         var random = new Random();
         var listOfWeakMonsters = new List<Creature>();
 
@@ -28,7 +23,7 @@ public class WeakMonsterFactory : ICreatureFactory
         {
             var position = new Position {X = random.Next(0, maxX), Y = random.Next(0, maxY)};
             
-            if (world.PositionIsOccupied(position)) continue;
+            if (targetWorld.PositionIsOccupied(position)) continue;
             var weakMonster = new WeakMonster
             {
                 Position = position,

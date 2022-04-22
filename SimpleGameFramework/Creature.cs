@@ -64,7 +64,7 @@ public abstract class Creature
     /// Hits another creature using AttackBehavior
     /// </summary>
     /// <param name="creature"></param>
-    public void Hit(Creature creature)
+    public void Hit(Creature? creature)
     {
         var message = $"{Name} hits {creature.Name}";
         Trace.WriteLine(message);
